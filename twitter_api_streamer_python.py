@@ -97,7 +97,7 @@ class TweetAnalyzer():
 
 
 if __name__ == "__main__":
-df['len'] = np.array([len(tweet.text) for tweet in tweets])
+    df['len'] = np.array([len(tweet.text) for tweet in tweets])
     hash_tag_list = ["AMDOCS", "TELECOM"]
     fetched_tweeets_filename = "tweets.json"
     twitter_client = TwitterClient('pyconindia')
