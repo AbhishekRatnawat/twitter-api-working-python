@@ -7,8 +7,10 @@ import twitter_creds
 import numpy as np
 import pandas as pd
 # TWITTER CLIENT
+
+
 class TwitterClient():
-    def __init__(self, twitter_user=None):   #if it is none it will go to default user_timeline
+    def __init__(self, twitter_user=None):  # if it is none it will go to default user_timeline
         self.auth = TwitterAuthenticator().authenticate_twitter_app()
         self.twitter_client = API(self.auth)
         self.twitter_user = twitter_user
@@ -18,19 +20,19 @@ class TwitterClient():
 
     def get_user_timeline_tweets(self, num_tweets):
         tweets = []
-        for tweet in Cursor(self.twitter_client.user_timeline, id = self.twitter_user).items(num_tweets):
+        for tweet in Cursor(self.twitter_client.user_timeline, id=self.twitter_user).items(num_tweets):
             tweets.append(tweet)
         return tweets
 
     def get_friend_list(self, num_friends):
         friend_list = []
-        for friend in Cursor (self.twitter_client.friends, id = self.twitter_user).items(num_friends):
+        for friend in Cursor(self.twitter_client.friends, id=self.twitter_user).items(num_friends):
             friend_list.append(friend)
         return friend_list
 
     def get_home_timeline_tweets(self, num_tweets):
         home_timeline_tweets = []
-        for tweet in Cursor (self.twitter_client.home_timeline, id = self.twitter_user).items(num_tweets):
+        for tweet in Cursor(self.twitter_client.home_timeline, id=self.twitter_user).items(num_tweets):
             home_timeline_tweets.append(tweet)
         return home_timeline_tweets
 
@@ -44,6 +46,8 @@ class TwitterAuthenticator():
         return auth
 
 # STREAMER CLASS
+
+
 class TwitterStreamer():
     """
     class for streaming and processing tweets
@@ -59,6 +63,8 @@ class TwitterStreamer():
         stream.filter(track=hash_tag_list)
 
 # LISTENER CLASS
+
+
 class TwitterListener(StreamListener):  # inheritance of StreamListener Class
     """
     This is a basic listener class that will print all tweets in the STDOUT
@@ -82,14 +88,16 @@ class TwitterListener(StreamListener):  # inheritance of StreamListener Class
             return false
         print(status)
 
+
 class TweetAnalyzer():
     """
     Functionality for analysing and categorizing cotent from tweets.
     """
     pass
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
+df['len'] = np.array([len(tweet.text) for tweet in tweets])
     hash_tag_list = ["AMDOCS", "TELECOM"]
     fetched_tweeets_filename = "tweets.json"
     twitter_client = TwitterClient('pyconindia')

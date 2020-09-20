@@ -88,7 +88,8 @@ class TwitterListener(StreamListener):  # inheritance of StreamListener Class
             return false
         print(status)
 
-#ANALYSER CLASS
+# ANALYSER CLASS
+
 
 class TweetAnalyzer():
     """

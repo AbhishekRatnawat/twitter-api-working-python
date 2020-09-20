@@ -12,6 +12,7 @@ import re
 
 # TWITTER CLIENT
 
+
 class TwitterClient():
     def __init__(self, twitter_user=None):  # if it is none it will go to default user_timeline
         self.auth = TwitterAuthenticator().authenticate_twitter_app()
@@ -91,7 +92,8 @@ class TwitterListener(StreamListener):  # inheritance of StreamListener Class
             return false
         print(status)
 
-#ANALYSER CLASS
+# ANALYSER CLASS
+
 
 class TweetAnalyzer():
     """
@@ -109,7 +111,7 @@ class TweetAnalyzer():
         df['likes'] = np.array([tweet.favorite_count for tweet in tweets])
         return df
 
-    def clean_tweet (self, tweet):
+    def clean_tweet(self, tweet):
         return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
 
     def analyze_sentiment(self, tweet):
@@ -122,6 +124,7 @@ class TweetAnalyzer():
         else:
             return -1
 
+
 if __name__ == "__main__":
     tweet_analyzer = TweetAnalyzer()
     twitter_client = TwitterClient()
@@ -130,5 +133,5 @@ if __name__ == "__main__":
     df = tweet_analyzer.tweets_to_data_frame(tweets)
 
     df['sentiment'] = np.array([tweet_analyzer.analyze_sentiment(tweet) for tweet in df['tweets']])
-    print (df)
+    print(df)
     #print (df.head(10))

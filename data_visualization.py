@@ -90,7 +90,8 @@ class TwitterListener(StreamListener):  # inheritance of StreamListener Class
             return false
         print(status)
 
-#ANALYSER CLASS
+# ANALYSER CLASS
+
 
 class TweetAnalyzer():
     """
@@ -114,14 +115,14 @@ if __name__ == "__main__":
     api = twitter_client.get_twitter_client_api()
     tweets = api.user_timeline(screen_name="AmdocsTech", count=500)
     df = tweet_analyzer.tweets_to_data_frame(tweets)
-    #print(df.head(10))
-    print (np.mean(df['len']))   #average length of tweets
-    print (np.max(df['likes']))  #get the max liked tweet
-    #TIME SERIES PLOT -
-    time_likes = pd.Series(data = df['likes'].values, index = df['date'])   #plot for number of likes
-    time_likes.plot(figsize = (10,4), label = "likes", legend = True)   #plot for number of retweets
+    # print(df.head(10))
+    print(np.mean(df['len']))  # average length of tweets
+    print(np.max(df['likes']))  # get the max liked tweet
+    # TIME SERIES PLOT -
+    time_likes = pd.Series(data=df['likes'].values, index=df['date'])  # plot for number of likes
+    time_likes.plot(figsize=(10, 4), label="likes", legend=True)  # plot for number of retweets
 
-    time_retweets = pd.Series(data = df['retweet_count'].values, index = df['date'])
-    time_retweets.plot(figsize = (10,4), label = "retweet_count", legend=True)
+    time_retweets = pd.Series(data=df['retweet_count'].values, index=df['date'])
+    time_retweets.plot(figsize=(10, 4), label="retweet_count", legend=True)
 
     plt.show()
