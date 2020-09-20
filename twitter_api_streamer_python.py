@@ -97,12 +97,12 @@ class TweetAnalyzer():
 
 
 if __name__ == "__main__":
-    
+
     hash_tag_list = ["AMDOCS", "TELECOM"]
     fetched_tweeets_filename = "tweets.json"
     twitter_client = TwitterClient('pyconindia')
     print(twitter_client.get_user_timeline_tweets(1))
     print(twitter_client.get_home_timeline_tweets(2))
     print(twitter_client.get_friend_list(1))
-    #twitter_streamer = TwitterStreamer()
-    #twitter_streamer.stream_tweets(fetched_tweeets_filename, hash_tag_list)
+    twitter_streamer = TwitterStreamer()
+    twitter_streamer.stream_tweets(fetched_tweeets_filename, hash_tag_list)
