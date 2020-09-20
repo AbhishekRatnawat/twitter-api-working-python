@@ -6,8 +6,10 @@ from tweepy import Stream
 import twitter_creds
 import numpy as np
 import pandas as pd
-# TWITTER CLIENT
+import matplotlib.pyplot as plt
 
+
+# TWITTER CLIENT
 
 class TwitterClient():
     def __init__(self, twitter_user=None):  # if it is none it will go to default user_timeline
@@ -101,7 +103,7 @@ class TweetAnalyzer():
         df['retweet_count'] = np.array([tweet.retweet_count for tweet in tweets])
         #df['user'] = np.array([tweet.user for tweet in tweets])
         df['len'] = np.array([len(tweet.text) for tweet in tweets])
-        df['dates'] = np.array([tweet.created_at for tweet in tweets])
+        df['date'] = np.array([tweet.created_at for tweet in tweets])
         df['likes'] = np.array([tweet.favorite_count for tweet in tweets])
         return df
 
@@ -110,9 +112,16 @@ if __name__ == "__main__":
     tweet_analyzer = TweetAnalyzer()
     twitter_client = TwitterClient()
     api = twitter_client.get_twitter_client_api()
-    tweets = api.user_timeline(screen_name="ManUtd", count=500)
-    # print(dir(tweets[0]))
-    #print (tweets[0].id)
-    #print (tweets[0].retweet_count)
+    tweets = api.user_timeline(screen_name="AmdocsTech", count=500)
     df = tweet_analyzer.tweets_to_data_frame(tweets)
-    print(df.head(10))
+    #print(df.head(10))
+    print (np.mean(df['len']))   #average length of tweets
+    print (np.max(df['likes']))  #get the max liked tweet
+    #TIME SERIES PLOT -
+    time_likes = pd.Series(data = df['likes'].values, index = df['date'])   #plot for number of likes
+    time_likes.plot(figsize = (10,4), label = "likes", legend = True)   #plot for number of retweets
+
+    time_retweets = pd.Series(data = df['retweet_count'].values, index = df['date'])
+    time_retweets.plot(figsize = (10,4), label = "retweet_count", legend=True)
+
+    plt.show()

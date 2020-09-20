@@ -6,8 +6,11 @@ from tweepy import Stream
 import twitter_creds
 import numpy as np
 import pandas as pd
-# TWITTER CLIENT
+import matplotlib.pyplot as plt
+from textblob import TextBlob
+import re
 
+# TWITTER CLIENT
 
 class TwitterClient():
     def __init__(self, twitter_user=None):  # if it is none it will go to default user_timeline
@@ -100,19 +103,32 @@ class TweetAnalyzer():
         df['id'] = np.array([tweet.id for tweet in tweets])
         df['retweet_count'] = np.array([tweet.retweet_count for tweet in tweets])
         #df['user'] = np.array([tweet.user for tweet in tweets])
+        df['tweets'] = np.array([tweet.text for tweet in tweets])
         df['len'] = np.array([len(tweet.text) for tweet in tweets])
-        df['dates'] = np.array([tweet.created_at for tweet in tweets])
+        df['date'] = np.array([tweet.created_at for tweet in tweets])
         df['likes'] = np.array([tweet.favorite_count for tweet in tweets])
         return df
 
+    def clean_tweet (self, tweet):
+        return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
+
+    def analyze_sentiment(self, tweet):
+        analysis = TextBlob(self.clean_tweet(tweet))
+
+        if analysis.sentiment.polarity > 0:
+            return 1
+        elif analysis.sentiment.polarity == 0:
+            return 0
+        else:
+            return -1
 
 if __name__ == "__main__":
     tweet_analyzer = TweetAnalyzer()
     twitter_client = TwitterClient()
     api = twitter_client.get_twitter_client_api()
     tweets = api.user_timeline(screen_name="ManUtd", count=500)
-    # print(dir(tweets[0]))
-    #print (tweets[0].id)
-    #print (tweets[0].retweet_count)
     df = tweet_analyzer.tweets_to_data_frame(tweets)
-    print(df.head(10))
+
+    df['sentiment'] = np.array([tweet_analyzer.analyze_sentiment(tweet) for tweet in df['tweets']])
+    print (df)
+    #print (df.head(10))
